@@ -43,6 +43,17 @@ if env("DB_REPLICA_HOST", default=""):
         },
     }
 
+if env("WAREHOUSE_DB_HOST", default=""):
+    DATABASES["warehouse"] = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("WAREHOUSE_DB_NAME", default="analytics"),
+        "USER": env("WAREHOUSE_DB_USER", default="analytics"),
+        "PASSWORD": env("WAREHOUSE_DB_PASSWORD", default="analytics"),
+        "HOST": env("WAREHOUSE_DB_HOST"),
+        "PORT": env("WAREHOUSE_DB_PORT", default="5432"),
+        "CONN_MAX_AGE": 0,
+    }
+
 MAX_REPLICATION_LAG = env.int("MAX_REPLICATION_LAG", default=1e8)  # 100MB
 API_READ_DATABASES: list[str] = env("API_READ_DATABASES", default="replica")
 
@@ -190,6 +201,7 @@ INSTALLED_APPS = [
     "cl.recap_rss",
     "cl.scrapers",
     "cl.search",
+    "cl.sync",
     "cl.simple_pages",
     "cl.sitemaps_infinite",
     "cl.stats",
